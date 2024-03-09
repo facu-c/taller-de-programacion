@@ -96,7 +96,16 @@ begin
 	else existeValor:= existeValor(a^.HD,valor); //SI ES MAYOR, BUSCO POR EL HIJO DERECHO
 end;
 
-VAR a: arbol; codigo: integer; menorSocio: arbol; edadMayor: integer; valor: integer;
+function existeNombre(a: arbol; nombre: string): boolean; //BUSCO EL NOMBRE DE UN PERSONA PARA VER SI EXISTE EN EL ARBOL
+begin
+	if( a = nil )then existeNombre:= false //CASO BASE DE QUE NO SE ENCUENTRE
+	else if( a^.dato.nombre = nombre )then existeNombre:= true //CASO BASE DE ENCONTRARLA
+	else begin
+		existeNombre:= existeNombre(a^.HI,nombre) or existeNombre(a^.HD,nombre); //AVANZO, LE DIGO A LA FUNCION QUE TOME EL VALOR DE LOS HIJOS IZQUIERDOS Y DESPUES VERIFIQUE LOS DERECHOS, CON QUE UNO SEA VERDADERO DEVUELVE TRUE
+	end;
+end;
+
+VAR a: arbol; codigo: integer; menorSocio: arbol; edadMayor: integer; valor: integer; nombre: string;
 BEGIN
 	leerCargar(a);
 	codigo:=0;
@@ -106,7 +115,9 @@ BEGIN
 	aumentarEdad(a);
 	writeln('El socio de codigo mayor es: ', codigo, ', el socio de codigo menor es: ', menorSocio^.dato.num,', la mayor edad es: ', edadMayor);
 	write('Ingrese el codigo de socio a buscar: '); readln(valor);
-	write(existeValor(a,valor));
+	writeln(existeValor(a,valor));
+	write('Ingrese el nombre del socio a buscar: '); readln(nombre);
+	writeln(existeNombre(a,nombre));
 	
 END.
 
