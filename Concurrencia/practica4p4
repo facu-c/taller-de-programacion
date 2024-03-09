@@ -1,0 +1,108 @@
+programa facundo
+procesos
+  proceso recogerFlores(ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+  fin
+  proceso recogerPapeles(ES papeles:numero)
+  comenzar 
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles+1
+  fin
+  proceso vaciarBolsa(ES papeles:numero; ES flores:numero)
+  comenzar
+    si(HayFlorEnLaBolsa)
+      mientras(HayFlorEnLaBolsa)
+        depositarFlor
+        flores:=flores-1
+    si(HayPapelEnLaBolsa)
+      mientras(HayPapelEnLaBolsa)
+        depositarPapel
+        papeles:=papeles-1
+  fin
+  proceso empezarTrabajo
+  comenzar
+    EnviarMensaje(V,robotUno)
+    EnviarMensaje(V,robotDos)
+  fin
+  proceso terminarTrabajo
+  comenzar
+    EnviarMensaje(F,robotUno)
+    EnviarMensaje(F,robotDos)
+  fin
+areas
+  areaJefe: AreaP(1,1,1,1)
+  areaComun: AreaC(2,1,100,100)
+robots
+  robot recolector
+  variables
+    papeles, av, ca, flores, tarea:numero
+    puedo:boolean
+  comenzar
+    RecibirMensaje(puedo,robotFiscal)
+    flores:=0
+    papeles:=0
+    Informar(flores)
+    mientras(puedo)
+      RecibirMensaje(tarea,robotFiscal)
+      RecibirMensaje(av,robotFiscal)
+      RecibirMensaje(ca,robotFiscal)
+      Informar(av)
+      Informar(ca)
+      Pos(av,ca)
+      si(tarea=1)
+        recogerFlores(flores)
+        EnviarMensaje(V,robotFiscal)
+        RecibirMensaje(puedo,robotFiscal)
+      sino
+        si(tarea=2)
+          recogerPapeles(papeles)
+          EnviarMensaje(V,robotFiscal)
+          RecibirMensaje(puedo,robotFiscal)
+        sino
+          vaciarBolsa(papeles,flores)
+          EnviarMensaje(V,robotFiscal)
+          RecibirMensaje(puedo,robotFiscal)
+  fin
+  robot fiscal
+  variables
+    av,ca,tarea,id:numero
+    ok:boolean
+  comenzar
+    repetir 2
+      Random(id,1,2) 
+      si(id=1)
+        EnviarMensaje(V,robotUno)
+        Random(tarea,1,3)
+        EnviarMensaje(tarea,robotUno)
+        Random(av,2,99)
+        EnviarMensaje(av,robotUno)
+        Random(ca,2,99)
+        EnviarMensaje(ca,robotUno)
+        RecibirMensaje(ok,robotUno)
+      sino
+        EnviarMensaje(V,robotDos)
+        Random(tarea,1,3)
+        Random(av,2,99)
+        Random(ca,2,99)
+        EnviarMensaje(tarea,robotDos)
+        EnviarMensaje(av,robotDos)
+        EnviarMensaje(ca,robotDos)
+        RecibirMensaje(ok,robotDos)
+    terminarTrabajo
+  fin
+variables
+  robotFiscal:fiscal
+  robotUno:recolector
+  robotDos:recolector
+comenzar
+  AsignarArea(robotFiscal,areaJefe)
+  AsignarArea(robotUno,areaComun)
+  AsignarArea(robotDos,areaComun)
+  Iniciar(robotFiscal,1,1)
+  Iniciar(robotUno,2,1)
+  Iniciar(robotDos,3,1)
+fin

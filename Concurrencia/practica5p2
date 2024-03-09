@@ -1,0 +1,88 @@
+programa facundo
+areas
+  areaUno: AreaP(1,1,100,1)
+  areaDos: AreaP(1,2,100,2)
+  areaTres: AreaP(1,3,100,3)
+  areaFiscal: AreaP(1,4,1,4)
+  areaComun: AreaC(50,50,50,50)
+robots
+  robot recolector
+  variables
+    flores, id, ca, av, posav:numero
+    ok:boolean
+  comenzar
+    RecibirMensaje(id,robotFiscal)
+    flores:=0
+    derecha
+    posav:=PosAv
+    mientras(posav<99)
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        flores:=flores+1
+        si(flores=10)
+          av:=PosAv
+          ca:=PosCa
+          BloquearEsquina(50,50)
+          Pos(50,50)
+          repetir 10
+            depositarFlor
+            flores:=flores-1
+          Pos(av,ca)
+          LiberarEsquina(50,50)
+          si(id=1)
+            EnviarMensaje(V,robotDos)
+            EnviarMensaje(V,robotTres)
+            RecibirMensaje(ok,robotDos)
+            RecibirMensaje(ok,robotTres)
+          sino
+            si(id=2)
+              EnviarMensaje(V,robotUno)
+              EnviarMensaje(V,robotTres)
+              RecibirMensaje(ok,robotUno)
+              RecibirMensaje(ok,robotTres)
+            sino
+              EnviarMensaje(V,robotUno)
+              EnviarMensaje(V,robotDos)
+              RecibirMensaje(ok,robotUno)
+              RecibirMensaje(ok,robotDos)
+      mover
+      posav:=PosAv
+    EnviarMensaje(V,robotFiscal)
+  fin
+  robot fiscal
+  variables
+    flores:numero
+    ok:boolean
+  comenzar
+    flores:=0
+    EnviarMensaje(1,robotUno)
+    EnviarMensaje(2,robotDos)
+    EnviarMensaje(3,robotTres)
+    RecibirMensaje(ok,robotUno)
+    RecibirMensaje(ok,robotDos)
+    RecibirMensaje(ok,robotTres)
+    Pos(50,50)
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+    Informar(flores)
+  fin
+variables
+  robotUno: recolector
+  robotDos: recolector
+  robotTres: recolector
+  robotFiscal: fiscal
+comenzar
+  AsignarArea(robotUno,areaUno)
+  AsignarArea(robotUno,areaComun)
+  AsignarArea(robotDos,areaDos)
+  AsignarArea(robotDos,areaComun)
+  AsignarArea(robotTres,areaTres)
+  AsignarArea(robotTres,areaComun)
+  AsignarArea(robotFiscal,areaFiscal)
+  AsignarArea(robotFiscal,areaComun)
+  Iniciar(robotUno,1,1)
+  Iniciar(robotDos,1,2)
+  Iniciar(robotTres,1,3)
+  Iniciar(robotFiscal,1,4)
+fin

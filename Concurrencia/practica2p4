@@ -1,0 +1,119 @@
+programa pro
+procesos
+  proceso juntarPapeles(ES papeles:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles+1
+  fin
+  proceso juntarFlores(ES flores:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+       papeles:=papeles+1
+  fin
+  proceso limpiar(ES flores:numero; ES papeles:numero)
+  variables
+    ca,av:numero
+    posca,posav:numero
+  comenzar
+    ca:=PosCa
+    av:=PosAv
+    Random(posca,25,75)
+    Random(posav,25,75)
+    Pos(posav,posca)
+    juntarPapeles(papeles)
+    juntarFlores(flores)
+    Pos(av,ca)
+  fin
+  proceso maximo(E numRobot:numero; ES max:numero; E total:numero; ES robotMax:numero)
+  comenzar
+    si(total>max)
+      max:=total
+      robotMax:=numRobot
+  fin
+  proceso enviarIDs
+  comenzar
+    EnviarMensaje(1,robotUno)
+    EnviarMensaje(2,robotDos)
+    EnviarMensaje(3,robotTres)
+    EnviarMensaje(4,robotCuatro)
+  fin
+areas
+  areaUno : AreaPC(25,25,75,75)
+  areaFis : AreaP()
+robots
+  robot recolector
+  variables
+    flores, papeles:numero
+    id:numero
+    puedo:boolean
+  comenzar
+    flores:=0
+    papeles:=0
+    puedo:=F
+    RecibirMensaje(id,robotFiscal)
+    RecibirMensaje(puedo,robotFiscal)
+    mientras(puedo)
+      limpiar(flores,papeles)
+      EnviarMensaje(id,robotFiscal)
+      RecibirMensaje(puedo,robotFiscal)
+    EnviarMensaje(id,robotFiscal
+    EnviarMensaje(flores,robotFiscal)
+    EnviarMensaje(papeles,robotFiscal)
+    RecibirMensaje(ganador,robotFiscal)
+    si(ganador=id)
+      Pos(50,50)
+  fin
+  robot fiscal
+  variables
+    flores, papeles, total, num, numRobot,robotMax, max:numero
+  comenzar
+    enviarIDs
+    repetir 10
+      Random(numRobot,1,4)
+      si(numRobot = 1)
+        EnviarMensaje(V,robotUno)
+      sino
+        si(numRobot=2)
+          EnviarMensaje(V,robotDos)
+        sino
+          si(numRobot=3)
+            EnviarMensaje(V,robotTres)
+          sino
+            si(numRobot=4)
+              EnviarMensaje(V,robotCuatro)
+      RecibirMensaje(numRobot,*)
+    EnviarMensaje(F,robotUno)
+    EnviarMensaje(F,robotDos)
+    EnviarMensaje(F,robotTres)
+    EnviarMensaje(F,robotCuatro)
+    max:=-1
+    repetir 4
+      RecibirMensaje(numRobot,*)
+      si(numRobot=1)
+        RecibirMensaje(flores,robotUno)
+        RecibirMensaje(papeles,robotDos)
+      sino
+        si(numRobot=2)
+          RecibirMensaje(flores,robotDos)
+          RecibirMensaje(papeles,robotDos)
+        sino
+          si(numRobot=3)
+            RecibirMensaje(flores,robotTres)
+            RecibirMensaje(papeles,robotTres)
+          sino
+            si(numRobot=4)
+              RecibirMensaje(flores,robotCuatro)
+              RecibirMensaje(papeles,robotCuatro)
+      maximo(numRobot,max,flores+papeles,robotMax)
+    EnviarMensaje(robotMax,robotUno)
+    EnviarMensaje(robotMax,robotDos)
+    EnviarMensaje(robotMax,robotTres)
+    EnviarMensaje(robotMax,robotCuatro)
+    Informar(robotMax)
+  fin
+variables
+  
+comenzar
+fin

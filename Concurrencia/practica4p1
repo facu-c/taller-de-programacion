@@ -1,0 +1,113 @@
+programa pro
+procesos
+  proceso enviarIds
+  comenzar
+    EnviarMensaje(1,robotUno)
+    EnviarMensaje(2,robotDos)
+    EnviarMensaje(3,robotTres)
+  fin
+areas
+  areaServidor: AreaP(100,100,100,100)
+  areaUno: AreaPC(1,1,1,100)
+  areaDos: AreaPC(2,1,2,100)
+  areaTres: AreaPC(3,1,3,100)
+robots
+  robot robotCliente
+  variables
+    puedo: boolean
+    flores, id, av, ca:numero
+  comenzar
+    puedo:=V
+    RecibirMensaje(id,servidor) 
+    mientras(puedo)
+      av:=PosAv
+      ca:=PosCa
+      Random(flores, 1,100)
+      EnviarMensaje(id,servidor)
+      EnviarMensaje(flores,servidor)
+      EnviarMensaje(av,servidor)
+      EnviarMensaje(ca,servidor)
+      RecibirMensaje(puedo,servidor)
+      mover
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+      Pos(av,ca)
+      mientras(ca<>100)
+        mientras(HayFlorEnLaBolsa)
+          depositarFlor
+          mover
+          ca:=PosCa+1
+      si(ca=100)
+        EnviarMensaje(0,servidor)
+        RecibirMensaje(puedo,servidor)
+      sino
+        RecibirMensaje(puedo,servidor)
+  fin
+  robot robotServidor
+  variables
+    ok, terminar, id, flores, av, ca:numero
+    puedo: boolean
+  comenzar
+    enviarIds
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+    terminar:=0
+    puedo:=V
+    mientras(puedo)
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(flores,robotUno)
+        RecibirMensaje(av,robotUno)
+        RecibirMensaje(ca,robotUno)
+      sino
+        si(id=2)
+          RecibirMensaje(flores,robotDos)
+          RecibirMensaje(av,robotDos)
+          RecibirMensaje(ca,robotDos)
+        sino
+          RecibirMensaje(flores,robotTres)
+          RecibirMensaje(av,robotTres)
+          RecibirMensaje(ca,robotTres)
+      si(flores <> 0)
+        Pos(av,ca+1)
+        repetir flores
+          depositarFlor
+        Pos(100,100)
+      si(id=1)
+        EnviarMensaje(V,robotUno)
+        RecibirMensaje(ok,robotUno)
+        EnviarMensaje(V,robotUno)
+      sino
+        si(id=2)
+          EnviarMensaje(V,robotDos)
+          RecibirMensaje(ok,robotUno)
+          EnviarMensaje(V,robotDos)
+        sino
+          EnviarMensaje(V,robotTres)
+          RecibirMensaje(ok,robotTres)
+          EnviarMensaje(V,robotTres)
+      si(ok=0)
+        terminar:= terminar+1
+      si(terminar=3)
+        EnviarMensaje(F,robotUno)
+        EnviarMensaje(F,robotDos)
+        EnviarMensaje(V,robotTres)
+  fin
+variables  
+  robotUno:robotCliente
+  robotDos:robotCliente
+  robotTres:robotCliente
+  servidor:robotServidor
+comenzar 
+  AsignarArea(robotUno,areaUno)
+  AsignarArea(servidor,areaUno)
+  AsignarArea(robotDos,areaDos)
+  AsignarArea(servidor,areaDos)
+  AsignarArea(robotTres,areaTres)
+  AsignarArea(servidor,areaTres)
+  AsignarArea(servidor,areaServidor)
+  Iniciar(robotUno,1,1)
+  Iniciar(robotDos,2,1)
+  Iniciar(robotTres,3,1)
+  Iniciar(servidor,100,100)
+fin

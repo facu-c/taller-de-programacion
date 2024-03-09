@@ -1,0 +1,62 @@
+programa progra
+procesos
+  proceso recorrer(ES flores:numero)
+  comenzar
+    repetir 9      
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        flores:=flores+1
+      mover
+  fin
+areas
+  areaUno: AreaP(1,1,1,10)
+  areaDos: AreaP(2,11,2,20)
+  areaTres: AreaP(3,21,3,30)
+  areaCuatro: AreaP(4,31,4,40)
+  areaCinco: AreaP(5,41,5,50)
+  areaSeis: AreaP(6,51,6,60)
+  areaFis: AreaP(2,1,2,1)
+robots
+  robot fiscalizador
+  variables
+    flores,max : numero
+  comenzar
+    max:=0
+    repetir 6
+      RecibirMensaje(flores,*)
+      si(flores>max)
+        max:=flores
+    Informar(max)
+  fin
+  robot recolector
+  variables
+    flores:numero
+  comenzar
+    flores:=0
+    recorrer(flores)
+    EnviarMensaje(flores,robotFiscal)
+  fin
+variables
+  robotUno : recolector
+  robotDos : recolector
+  robotTres : recolector
+  robotCuatro : recolector
+  robotCinco : recolector
+  robotSeis : recolector
+  robotFiscal : fiscalizador
+comenzar
+  AsignarArea(robotFiscal,areaFis)
+  AsignarArea(robotUno,areaUno)
+  AsignarArea(robotDos,areaDos)
+  AsignarArea(robotTres,areaTres)
+  AsignarArea(robotCuatro,areaCuatro)
+  AsignarArea(robotCinco,areaCinco)
+  AsignarArea(robotSeis,areaSeis)
+  Iniciar(robotUno,1,1)
+  Iniciar(robotDos,2,11)
+  Iniciar(robotTres,3,21)
+  Iniciar(robotCuatro,4,31)
+  Iniciar(robotCinco,5,41)
+  Iniciar(robotSeis,6,51)
+  Iniciar(robotFiscal,2,1)
+fin

@@ -1,0 +1,64 @@
+programa prog
+procesos
+  proceso escalones(ES cant:numero; E escalones:numero)
+  variables
+    flores,papeles:numero
+  comenzar
+    flores:=0
+    papeles:=0
+    mover
+    derecha
+    repetir escalones
+      mientras(HayPapelEnLaEsquina)
+        tomarPapel
+        papeles:=papeles+1
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        flores:=flores+1
+      mover
+    si(flores>papeles)
+      cant:=cant+1
+    repetir 3
+      derecha
+  fin
+areas
+  ciudad: AreaC(1,1,100,100)
+robots
+  robot fiscal
+  variables
+    cant:numero
+    total:numero
+  comenzar
+    cant:=0
+    total:=0
+    repetir 3
+      RecibirMensaje(cant,*)
+      total:=total+cant
+    Informar(total)
+  fin
+  robot recolector
+  variables
+    cant:numero
+    escalon:numero
+  comenzar
+    cant:=0
+    repetir 4
+      Random(escalon,1,5)
+      escalones(cant,escalon)
+    EnviarMensaje(cant,robotFiscal)
+  fin
+variables
+  robotUno:recolector
+  robotDos:recolector
+  robotTres:recolector
+  robotFiscal:fiscal
+comenzar
+  AsignarArea(robotUno,ciudad)
+  AsignarArea(robotTres,ciudad)
+  AsignarArea(robotDos,ciudad)
+  AsignarArea(robotFiscal,ciudad)
+  Iniciar(robotUno,2,1)
+  Iniciar(robotDos,7,1)
+  Iniciar(robotTres,12,1)
+  Iniciar(robotFiscal,1,1)
+fin

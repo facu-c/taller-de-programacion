@@ -1,0 +1,60 @@
+programa facundo 
+areas
+  areaUno: AreaP(1,1,1,100) 
+  areaDos: AreaP(2,1,2,100) 
+  areaTres: AreaP(3,1,3,100) 
+  areaFiscal: AreaP(4,1,4,1) 
+robots 
+  robot recolectores 
+  variables
+    cant, papeles, id, cantOk:numero 
+    termine:boolean 
+  comenzar
+    papeles:=0
+    RecibirMensaje(id,robotFiscal) 
+    repetir 99 
+      mientras(HayPapelEnLaEsquina)
+        tomarPapel 
+        papeles:=papeles+1 
+      mover 
+      cant:=cant+1
+      si(cant=5)
+        cant:=0
+        si(id=1) 
+          EnviarMensaje(V,robotDos) 
+          EnviarMensaje(V,robotTres)
+          RecibirMensaje(termine,robotDos)
+          RecibirMensaje(termine,robotTres)
+        sino 
+          si(id=2) 
+            EnviarMensaje(V,robotUno) 
+            EnviarMensaje(V,robotTres) 
+            RecibirMensaje(termine,robotUno)
+            RecibirMensaje(termine,robotTres)
+          sino
+            EnviarMensaje(V,robotUno) 
+            EnviarMensaje(V,robotDos) 
+            RecibirMensaje(termine,robotUno)
+            RecibirMensaje(termine,robotDos)
+  fin
+  robot fiscal 
+  comenzar 
+    EnviarMensaje(1,robotUno) 
+    EnviarMensaje(2,robotDos) 
+    EnviarMensaje(3,robotTres) 
+  fin 
+variables 
+  robotUno:recolectores 
+  robotDos:recolectores 
+  robotTres:recolectores 
+  robotFiscal:fiscal 
+comenzar
+  AsignarArea(robotUno,areaUno) 
+  AsignarArea(robotDos,areaDos) 
+  AsignarArea(robotTres,areaTres) 
+  AsignarArea(robotFiscal,areaFiscal) 
+  Iniciar(robotUno,1,1) 
+  Iniciar(robotDos,2,1) 
+  Iniciar(robotTres,3,1) 
+  Iniciar(robotFiscal,4,1) 
+fin

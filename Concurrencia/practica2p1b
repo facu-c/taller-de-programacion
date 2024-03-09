@@ -1,0 +1,43 @@
+programa progra
+procesos
+  proceso recorrer(ES flores:numero)
+  comenzar
+    repetir 9      
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        flores:=flores+1
+      mover
+  fin
+areas
+  areaUno: AreaP(1,1,1,10)
+  areaDos: AreaP(2,11,2,20)
+  areaFis: AreaP(2,1,2,1)
+robots
+  robot fiscalizador
+  variables
+    floresUno, floresDos:numero
+  comenzar
+    RecibirMensaje(floresUno,robotUno)
+    RecibirMensaje(floresDos,robotDos)
+    Informar(floresUno-floresDos)
+  fin
+  robot recolector
+  variables
+    flores:numero
+  comenzar
+    flores:=0
+    recorrer(flores)
+    EnviarMensaje(flores,robotFiscal)
+  fin
+variables
+  robotUno : recolector
+  robotDos : recolector
+  robotFiscal : fiscalizador
+comenzar
+  AsignarArea(robotFiscal,areaFis)
+  AsignarArea(robotUno,areaUno)
+  AsignarArea(robotDos,areaDos)
+  Iniciar(robotUno,1,1)
+  Iniciar(robotDos,2,11)
+  Iniciar(robotFiscal,2,1)
+fin

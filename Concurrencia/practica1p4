@@ -1,0 +1,60 @@
+programa program 
+procesos 
+  proceso avanzarFlores 
+  comenzar 
+    repetir 99 
+      mover 
+      si(HayFlorEnLaEsquina) 
+        tomarFlor 
+  fin 
+  proceso avanzarPapeles 
+  comenzar 
+    repetir 99 
+      mover 
+      si(HayFlorEnLaEsquina) 
+        tomarFlor 
+  fin 
+  proceso cambiarLado 
+  comenzar 
+    derecha
+    mover
+    derecha
+  fin 
+areas 
+  areaUno : AreaP(1,1,25,100) 
+  areaDos : AreaP(26,1,50,100) 
+  areaTres : AreaP(51,1,75,100) 
+  areaCuatro : AreaP(76,1,100,100) 
+robots 
+  robot tipoPar 
+  variables 
+    i : numero 
+  comenzar 
+    repetir 2 
+      repetir 1
+        avanzarFlores
+        cambiarLado  
+  fin 
+  robot tipoImpar 
+  variables 
+    i : numero 
+  comenzar 
+    repetir 1
+      repetir 2 
+        avanzarPapeles
+        cambiarLado 
+  fin
+variables
+  robotUno : tipoPar
+  robotDos : tipoImpar
+  i : numero
+comenzar
+  AsignarArea(robotUno,areaDos)
+  AsignarArea(robotUno,areaCuatro)
+  AsignarArea(robotDos,areaUno)
+  AsignarArea(robotDos,areaTres)
+  Iniciar(robotDos,1,1)
+  Iniciar(robotUno,26,1)
+  Iniciar(robotDos,51,1)
+  Iniciar(robotUno,76,1)
+fin

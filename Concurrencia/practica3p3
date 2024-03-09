@@ -1,0 +1,132 @@
+programa pro
+procesos
+  proceso juntarFlores(ES flores:numero)
+  comenzar
+    si(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso enviarIds
+  comenzar
+    EnviarMensaje(1,robotUno)
+    EnviarMensaje(2,robotDos)
+    EnviarMensaje(3,robotTres)
+    EnviarMensaje(4,robotCuatro)
+  fin
+  proceso empezarTarea
+  comenzar
+    EnviarMensaje(V,robotUno)
+    EnviarMensaje(V,robotDos)
+    EnviarMensaje(V,robotTres)
+    EnviarMensaje(V,robotCuatro)
+  fin
+  proceso terminarTarea
+  comenzar
+    EnviarMensaje(F,robotUno)
+    EnviarMensaje(F,robotDos)
+    EnviarMensaje(F,robotTres)
+    EnviarMensaje(F,robotCuatro)
+  fin
+  proceso asignarLugares
+  variables
+    ca,av:numero
+  comenzar
+    Random(av,2,10)
+    Random(ca,2,10)
+    EnviarMensaje(av,robotUno)
+    EnviarMensaje(ca,robotUno)
+    EnviarMensaje(av,robotDos)
+    EnviarMensaje(ca,robotDos)
+    EnviarMensaje(av,robotTres)
+    EnviarMensaje(ca,robotTres)
+    EnviarMensaje(av,robotCuatro)
+    EnviarMensaje(ca,robotCuatro)
+  fin
+  proceso maximo(ES max:numero; ES robotMax:numero; E id:numero; E flores:numero)
+  comenzar
+    si(flores>max)
+      max:=flores
+      robotMax:=id
+  fin
+  proceso devolverFlores(E id:numero; ES flores:numero)
+  comenzar
+    si(id=1)
+      RecibirMensaje(flores,robotUno)
+    sino
+      si(id=2)
+        RecibirMensaje(flores,robotDos)
+      sino
+        si(id=3)
+          RecibirMensaje(flores,robotTres)
+        sino
+          si(id=4)
+            RecibirMensaje(flores,robotCuatro)
+  fin
+areas
+  areaC : AreaPC(2,2,10,10)
+  areaUno: AreaP(2,1,2,1)
+  areaDos: AreaP(3,1,3,1)
+  areaTres: AreaP(4,1,4,1)
+  areaCuatro: AreaP(5,1,5,1)
+  areaJefe: AreaP(1,1,1,1)
+robots
+  robot recolector
+  variables
+    av,ca,posca,posav,flores,id:numero
+    puedo:boolean
+  comenzar
+    RecibirMensaje(id,robotJefe)
+    RecibirMensaje(puedo,robotJefe)
+    av:=PosAv
+    ca:=PosCa
+    mientras(puedo)
+      RecibirMensaje(posav,robotJefe)
+      RecibirMensaje(posca,robotJefe)
+      BloquearEsquina(posav,posca)
+      Pos(posav,posca)
+      juntarFlores(flores)
+      Pos(av,ca)
+      LiberarEsquina(posav,posca)
+      RecibirMensaje(puedo,robotJefe)
+    EnviarMensaje(id,robotJefe)
+    EnviarMensaje(flores,robotJefe)
+  fin
+  robot jefe
+  variables
+    max,flores,robotMax,id:numero
+  comenzar
+    max:=-1
+    flores:=0
+    robotMax:=-1
+    enviarIds
+    repetir 10
+      empezarTarea
+      asignarLugares
+    terminarTarea
+    repetir 4
+      RecibirMensaje(id,*)
+      devolverFlores(id,flores)
+      maximo(max,robotMax,id,flores)
+    Informar(robotMax)
+  fin
+variables
+  robotUno: recolector
+  robotDos: recolector
+  robotTres: recolector
+  robotCuatro: recolector
+  robotJefe: jefe
+comenzar
+  AsignarArea(robotUno,areaC)
+  AsignarArea(robotUno,areaUno)
+  AsignarArea(robotDos,areaC)
+  AsignarArea(robotDos,areaDos)
+  AsignarArea(robotTres,areaTres)
+  AsignarArea(robotTres,areaC)
+  AsignarArea(robotCuatro,areaC)
+  AsignarArea(robotCuatro,areaCuatro)
+  AsignarArea(robotJefe,areaJefe)
+  Iniciar(robotUno,2,1)
+  Iniciar(robotDos,3,1)
+  Iniciar(robotTres,4,1)
+  Iniciar(robotCuatro,5,1)
+  Iniciar(robotJefe,1,1)
+fin

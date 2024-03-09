@@ -1,0 +1,170 @@
+programa pro
+procesos
+  proceso cuadrante(E id:numero; ES objetos:numero)
+  comenzar
+    si(id=1)
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        objetos:=objetos+1
+    sino
+      si(id=2)
+        mientras(HayFlorEnLaEsquina | HayPapelEnLaEsquina)
+          si(HayFlorEnLaEsquina)
+            tomarFlor
+            objetos:=objetos+1
+          si(HayPapelEnLaEsquina)
+            tomarPapel
+            objetos:=objetos+1
+      sino
+        mientras(HayPapelEnLaEsquina)
+          tomarPapel
+          objetos:=objetos+1
+    mover
+  fin
+  proceso hacerCuadrante(E lado:numero; E id:numero; ES objetos:numero)
+  variables
+    av,ca:numero
+  comenzar
+    repetir 2
+      repetir lado
+        ca:=PosCa+1
+        BloquearEsquina(PosAv,ca)
+        cuadrante(id,objetos)
+        LiberarEsquina(PosAv,ca-1)
+      derecha
+      repetir lado
+        av:=PosAv+1
+        BloquearEsquina(av,PosCa)
+        cuadrante(id,objetos)
+        LiberarEsquina(av-1,PosCa)
+      derecha
+  fin
+  proceso enviarIds
+  comenzar
+    EnviarMensaje(1,robotUno)
+    EnviarMensaje(2,robotDos)
+    EnviarMensaje(3,robotTres)   
+  fin
+  proceso enviarCalle20(E id:numero)
+  comenzar
+    si(id=1)
+      EnviarMensaje(20,robotUno)
+    sino
+      si(id=2)
+        EnviarMensaje(20,robotDos)
+      sino
+        EnviarMensaje(20,robotTres)
+  fin
+  proceso enviarCalle21(E id:numero)
+  comenzar
+    si(id=1)
+      EnviarMensaje(21,robotUno)
+    sino
+      si(id=2)
+        EnviarMensaje(21,robotDos)
+      sino
+        EnviarMensaje(21,robotTres)
+  fin
+  proceso enviarCalle22(E id:numero)
+  comenzar
+    si(id=1)
+      EnviarMensaje(22,robotUno)
+    sino
+      si(id=2)
+        EnviarMensaje(22,robotDos)
+      sino
+        EnviarMensaje(22,robotTres)
+  fin
+  proceso enviarCalles
+  variables
+    id:numero
+  comenzar
+    RecibirMensaje(id,*)
+    enviarCalle20(id)
+    RecibirMensaje(id,*)
+    enviarCalle21(id)
+    RecibirMensaje(id,*)
+    enviarCalle22(id)
+  fin
+  proceso enviarLados
+  comenzar
+    EnviarMensaje(6,robotUno)
+    EnviarMensaje(10,robotDos)
+    EnviarMensaje(7,robotTres)
+  fin
+  proceso dejarAvanzar(E id:numero; ES objetos:numero)
+  variables
+    ca:numero
+  comenzar
+    si(id=1)
+      mientras(PosCa > 99 & HayFlorEnLaBolsa)
+        ca:=ca+1
+        depositarFlor
+        BloquearEsquina(PosAv,ca)
+        mover
+        objetos:= objetos-1
+        LiberarEsquina(PosAv,ca-1)
+    si(id=2)
+      mientras(PosCa>99 & HayPapelEnLaBolsa | HayFlorEnLaBolsa)
+        si(HayPapelEnLaBolsa)
+          ca:=PosCa+1
+          depositarPapel
+          BloquearEsquina(PosAv,ca)
+          mover
+          objetos:= objetos-1
+          LiberarEsquina(PosAv,ca-1)
+        si(HayFlorEnLaBolsa)
+          ca:=PosCa+1
+          depositarFlor
+          BloquearEsquina(PosAv,ca)
+          mover
+          objetos:= objetos-1
+          LiberarEsquina(PosAv,ca-1)
+    si(id=3)
+      mientras(PosCa>99 & HayPapelEnLaBolsa)
+        ca:=PosCa+1
+        depositarPapel
+        BloquearEsquina(PosAv,ca)
+        mover
+        objetos:= objetos-1
+        LiberarEsquina(PosAv,ca-1)
+  fin
+areas
+  ciudad: AreaC(1,1,100,100)
+robots
+  robot recolector
+  variables
+    id, objetos, lado, ca:numero
+  comenzar
+    RecibirMensaje(id,robotJefe)
+    RecibirMensaje(lado,robotJefe)
+    objetos:=0
+    hacerCuadrante(lado,id,objetos)
+    EnviarMensaje(id,robotJefe)
+    RecibirMensaje(ca,robotJefe)
+    Pos(1,ca)
+    dejarAvanzar(id,objetos)
+  fin
+  robot jefe
+  variables
+    id:numero
+  comenzar
+    enviarIds
+    enviarLados
+    enviarCalles
+  fin
+variables
+  robotUno:recolector
+  robotDos:recolector
+  robotTres:recolector
+  robotJefe:jefe
+comenzar
+  AsignarArea(robotUno,ciudad)
+  AsignarArea(robotDos,ciudad)
+  AsignarArea(robotTres,ciudad)
+  AsignarArea(robotJefe,ciudad)
+  Iniciar(robotJefe,1,1)
+  Iniciar(robotUno,2,2)
+  Iniciar(robotDos,5,5)
+  Iniciar(robotTres,9,9)
+fin  

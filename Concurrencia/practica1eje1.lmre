@@ -1,0 +1,24 @@
+programa ejercicio1p1
+procesos
+  proceso avanzar
+  comenzar
+    repetir 99
+      mover
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+    mientras (HayFlorEnLaBolsa)
+      depositarFlor
+  fin
+areas
+  ciudad: AreaC(1,1,100,100)
+robots
+  robot robot1
+  comenzar
+    avanzar
+  fin
+variables
+  Rinfo: robot1
+comenzar
+  AsignarArea(Rinfo,ciudad)
+  Iniciar(Rinfo,1,1)
+fin 

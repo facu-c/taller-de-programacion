@@ -1,0 +1,73 @@
+programa facundo
+areas
+  areaConUno: AreaP(11,1,11,1)
+  areaConDos: AreaP(12,1,12,1)
+  esquinaCom: AreaC(50,50,50,50)
+  areaProUno: AreaP(5,1,5,100)
+  areaProDos: AreaP(10,1,10,100)
+robots
+  robot productores
+  variables
+    papeles, ca, av:numero
+  comenzar
+    repetir 99
+      papeles:=0
+      mientras(HayPapelEnLaEsquina)
+        ca:=PosCa
+        av:=PosAv
+        tomarPapel
+        papeles:=papeles+1
+        si(papeles=5)
+          BloquearEsquina(50,50)
+          Pos(50,50)
+          mientras(HayPapelEnLaBolsa)
+            depositarPapel
+            papeles:=papeles-1
+          Pos(av,ca)
+          LiberarEsquina(50,50)
+      mover
+  fin
+  robot consumidores
+  variables
+    terminar, canTomar, papeles, av,ca:numero
+  comenzar
+    terminar:=0
+    mientras(terminar<>8)
+      av:=PosAv
+      ca:=PosCa
+      papeles:=0
+      Random(canTomar,2,5)
+      BloquearEsquina(50,50)
+      Pos(50,50)
+      mientras(HayPapelEnLaEsquina)
+        tomarPapel
+        papeles:=papeles+1
+      si(papeles<>canTomar)
+        mientras(HayPapelEnLaBolsa)
+          depositarPapel
+        terminar:=terminar+1
+        Pos(av,ca)
+        LiberarEsquina(50,50)
+      sino
+        Pos(av,ca)
+        LiberarEsquina(50,50)
+  fin
+variables
+  robotUno: consumidores
+  robotDos: consumidores
+  robotTres: productores
+  robotCuatro: productores
+comenzar
+  AsignarArea(robotUno,areaConUno)
+  AsignarArea(robotUno,esquinaCom)
+  AsignarArea(robotDos,areaConDos)
+  AsignarArea(robotDos,esquinaCom)
+  AsignarArea(robotTres,areaProUno)
+  AsignarArea(robotTres,esquinaCom)
+  AsignarArea(robotCuatro,areaProDos)
+  AsignarArea(robotCuatro,esquinaCom)
+  Iniciar(robotUno,11,1)
+  Iniciar(robotDos,12,1)
+  Iniciar(robotTres,5,1)
+  Iniciar(robotCuatro,10,1)
+fin

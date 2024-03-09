@@ -1,0 +1,111 @@
+programa pro
+procesos
+  proceso enviarIds
+  comenzar
+    EnviarMensaje(1,robotUno)
+    EnviarMensaje(2,robotDos)
+    EnviarMensaje(3,robotTres)
+    EnviarMensaje(4,robotCuatro)
+  fin
+  proceso juntarPapeles(ES papeles:numero; ES puedo:boolean)
+  comenzar
+    si(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles+1
+    sino
+      puedo:=F
+  fin
+  proceso devolverPapeles(E id:numero; ES papeles:numero) {cambiar nombre para que sea la calle donde quedo el robot}
+  comenzar
+    si(id=1)
+      RecibirMensaje(papeles,robotUno)
+    sino
+      si(id=2)
+        RecibirMensaje(papeles,robotDos)
+      sino
+        si(id=3)
+          RecibirMensaje(papeles,robotTres)
+        sino
+          si(id=4) {no es necesario uwu}
+            RecibirMensaje(papeles,robotCuatro)
+  fin
+  proceso maximo(ES max:numero; ES robotMax:numero; E id:numero; E papeles:numero)
+  comenzar
+    si(papeles>max)
+      max:=papeles
+      robotMax:=id
+  fin
+  proceso empezarTrabajo
+  comenzar
+    EnviarMensaje(V,robotUno)
+    EnviarMensaje(V,robotDos)
+    EnviarMensaje(V,robotTres)
+    EnviarMensaje(V,robotCuatro)
+  fin
+areas
+  areaUno: AreaP(4,1,4,100)
+  areaDos: AreaP(6,1,6,100)
+  areaTres: AreaP(8,1,8,100)
+  areaCuatro: AreaP(10,1,10,100)
+  areaC : AreaC(11,11,11,11)
+  areaJefe: AreaP(1,1,1,1)
+robots
+  robot recolector
+  variables
+    papeles,id,av,ca:numero
+    puedo:boolean
+  comenzar
+    papeles:=0 {sacar papeles, no es necesaria uwu}
+    RecibirMensaje(id,robotJefe)
+    puedo:=V
+    av:=PosAv
+    mientras(puedo)
+      ca:=PosCa
+      BloquearEsquina(11,11)
+      Pos(11,11)
+      juntarPapeles(papeles,puedo)
+      Pos(av,ca)
+      si(~puedo)
+        EnviarMensaje(id,robotJefe)
+      LiberarEsquina(11,11)   
+      si(puedo)
+        mover
+    ca:=PosCa
+    EnviarMensaje(ca,robotJefe)
+  fin
+  robot jefe
+  variables
+    puedo:boolean
+    robotMax,max,papeles,id:numero
+  comenzar
+    max:=-1
+    papeles:=0
+    enviarIds
+    repetir 4
+      RecibirMensaje(id,*)
+      devolverPapeles(id,papeles)
+      maximo(max,robotMax,id,papeles)
+    Informar(robotMax)
+  fin
+variables
+  robotUno: recolector
+  robotDos: recolector
+  robotTres: recolector
+  robotCuatro: recolector
+  robotJefe : jefe
+comenzar
+  AsignarArea(robotUno,areaC)
+  AsignarArea(robotUno,areaUno)
+  AsignarArea(robotDos,areaC)
+  AsignarArea(robotDos,areaDos)
+  AsignarArea(robotTres,areaC)
+  AsignarArea(robotTres,areaTres)
+  AsignarArea(robotCuatro,areaC)
+  AsignarArea(robotCuatro,areaCuatro)
+  AsignarArea(robotJefe,areaJefe)
+  Iniciar(robotJefe,1,1)
+  Iniciar(robotUno,4,1)
+  Iniciar(robotDos,6,1)
+  Iniciar(robotTres,8,1)
+  Iniciar(robotCuatro,10,1)
+fin

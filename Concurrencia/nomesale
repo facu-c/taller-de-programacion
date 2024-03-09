@@ -1,0 +1,98 @@
+programa facundo 
+procesos 
+  proceso juntarFlores(ES flores:numero) 
+  comenzar 
+    mientras(HayFlorEnLaEsquina) 
+      tomarFlor 
+      flores:=flores+1 
+  fin 
+  proceso dejarFlores(ES flores:numero) 
+  comenzar 
+    mientras(HayFlorEnLaBolsa) 
+      depositarFlor 
+      flores:=flores-1 
+  fin 
+areas 
+  cuadrante: AreaPC(40,40,60,60) 
+  esquina: AreaC(10,10,10,10) 
+  areaUno: AreaP(1,1,1,1) 
+  areaDos: AreaP(2,1,2,1) 
+  areaTres: AreaP(3,1,3,1) 
+  areaFiscal: AreaP(4,1,4,1) 
+robots 
+  robot florero 
+  variables 
+    ca,av,posca,posav,flores:numero 
+  comenzar 
+    flores:=0 
+    ca:=PosCa 
+    av:=PosAv 
+    repetir 8 
+      RecibirMensaje(posav,robotFiscal) 
+      RecibirMensaje(posca,robotFiscal) 
+      BloquearEsquina(posav,posca) 
+      Pos(posav,posca) 
+      juntarFlores(flores) 
+      Pos(av,ca) 
+      LiberarEsquina(posav,posca) 
+    BloquearEsquina(10,10) 
+    Pos(10,10) 
+    dejarFlores(flores) 
+    Pos(av,ca) 
+    LiberarEsquina(10,10) 
+    EnviarMensaje(V,robotFiscal) 
+  fin 
+  robot fiscal 
+  variables 
+    id, av, ca, posca,posav,flores:numero 
+    ok:boolean  
+  comenzar 
+    flores:=0  
+    repetir 4 
+      Random(id,1,3)
+      si(id=1) 
+        repetir 8 
+          Random(av,40,60) 
+          Random(ca,40,60) 
+          EnviarMensaje(av,robotUno) 
+          EnviarMensaje(ca,robotUno) 
+      sino 
+        si(id=2) 
+          repetir 8 
+            Random(av,40,60)
+            Random(ca,40,60)
+            EnviarMensaje(av,robotDos) 
+            EnviarMensaje(ca,robotDos) 
+        sino 
+          repetir 8
+            Random(av,40,60)
+            Random(ca,40,60)
+            EnviarMensaje(av,robotTres)
+            EnviarMensaje(ca,robotTres)
+    RecibirMensaje(ok,*)
+    Pos(10,10)
+    juntarFlores(flores) 
+    Informar(flores)     
+  fin 
+variables 
+  robotUno: florero 
+  robotDos: florero 
+  robotTres: florero 
+  robotFiscal: fiscal 
+comenzar 
+  AsignarArea(robotUno,cuadrante) 
+  AsignarArea(robotUno,esquina) 
+  AsignarArea(robotUno,areaUno) 
+  AsignarArea(robotDos,cuadrante) 
+  AsignarArea(robotDos,esquina) 
+  AsignarArea(robotDos,areaDos) 
+  AsignarArea(robotTres,cuadrante) 
+  AsignarArea(robotTres,esquina) 
+  AsignarArea(robotTres,areaTres) 
+  AsignarArea(robotFiscal,areaFiscal) 
+  AsignarArea(robotFiscal,esquina) 
+  Iniciar(robotUno,1,1) 
+  Iniciar(robotDos,2,1) 
+  Iniciar(robotTres,3,1) 
+  Iniciar(robotFiscal,4,1) 
+fin

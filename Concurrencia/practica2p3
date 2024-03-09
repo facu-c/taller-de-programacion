@@ -1,0 +1,75 @@
+programa pro
+procesos
+  proceso recorrerFlores(ES flores:numero)
+  comenzar
+    derecha
+    mover
+    repetir 9 
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+      mover
+  fin
+  proceso recorrerPapeles(ES papeles:numero)
+  comenzar
+    derecha
+    mover
+    repetir 9
+      mientras(HayPapelEnLaEsquina)
+        tomarPapel
+      mover
+  fin
+areas
+  areaUno: AreaPC(1,1,20,1)
+  areaDos: AreaPC(1,5,20,5)
+robots
+  robot primeroFlores
+  variables
+    flores:numero
+  comenzar
+    flores:=0
+    recorrerFlores(flores)
+    EnviarMensaje(flores,robotUltF)
+  fin
+  robot primeroPapeles
+  variables
+    papeles:numero
+  comenzar
+    papeles:=0
+    recorrerPapeles(papeles)
+    EnviarMensaje(papeles,robotUltP)
+  fin
+  robot ultFlores
+  variables
+    flores, floresOtro:numero
+  comenzar
+    flores:=0
+    floresOtro:=0
+    recorrerFlores(flores)
+    RecibirMensaje(floresOtro,robotPriF)
+    Informar(flores+floresOtro)
+  fin
+  robot ultPapeles
+  variables
+    papeles, papelesOtro:numero
+  comenzar
+    papeles:=0
+    papelesOtro:=0
+    recorrerPapeles(papeles)
+    RecibirMensaje(papelesOtro,robotPriP)
+    Informar(papeles+papelesOtro)
+  fin
+variables
+  robotPriF:primeroFlores
+  robotPriP:primeroPapeles
+  robotUltP:ultPapeles
+  robotUltF:ultFlores
+comenzar
+  AsignarArea(robotPriF,areaUno)
+  AsignarArea(robotUltF,areaUno)
+  AsignarArea(robotPriP,areaDos)
+  AsignarArea(robotUltP,areaDos)
+  Iniciar(robotPriF,1,1)
+  Iniciar(robotUltF,10,1)
+  Iniciar(robotPriP,1,5)
+  Iniciar(robotUltP,10,5)
+fin

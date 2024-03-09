@@ -1,0 +1,40 @@
+programa program
+procesos
+  proceso avenida(ES cant:numero)
+  comenzar
+    repetir 99 
+      mientras(HayFlorEnLaEsquina) 
+        tomarFlor
+      mover
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+    mientras(HayFlorEnLaBolsa)
+      cant:= cant + 1
+      depositarFlor
+  fin 
+areas
+  avenidaUno: AreaP(1,1,1,100)
+  avenidaTres: AreaP(3,1,3,100)
+  avenidaCinco: AreaP(5,1,5,100)
+robots
+  robot tipo1
+  variables
+    cant : numero
+  comenzar
+    cant := 0
+    avenida(cant)
+    Informar(cant)
+  fin
+variables
+  elMelli : tipo1
+  elOtroMelli: tipo1
+  facu : tipo1
+comenzar
+  AsignarArea(elMelli,avenidaUno)
+  AsignarArea(elOtroMelli,avenidaTres)
+  AsignarArea(facu,avenidaCinco)
+  Iniciar(facu,5,1)
+  Iniciar(elMelli,1,1)
+  Iniciar(elOtroMelli,3,1)
+  
+fin

@@ -1,0 +1,66 @@
+programa program
+procesos
+  proceso avanzarFlores
+  comenzar
+    repetir 5
+      mover
+      si(HayPapelEnLaEsquina)
+        tomarFlor
+  fin
+  proceso avanzarPapeles
+  comenzar
+    repetir 5
+      mover
+      si(HayPapelEnLaEsquina)
+        tomarPapel
+  fin
+areas
+  areaUno : AreaPC(1,75,7,80)
+  areaDos : AreaPC(1,10,8,15)
+robots
+  robot tipoUno
+  comenzar
+    avanzarFlores
+    Pos(PosAv+1,PosCa-5)
+    repetir 2
+      avanzarFlores
+      Pos(PosAv+1,PosCa-5)
+  fin
+  robot tipoDos
+  comenzar
+    avanzarPapeles
+    Pos(PosAv+1,PosCa-5)
+    repetir 2
+      avanzarPapeles
+      Pos(PosAv+1,PosCa-5)
+    avanzarPapeles
+  fin
+  robot tipoTres
+  comenzar
+    avanzarFlores
+    Pos(PosAv+1,PosCa-5)
+    repetir 5
+      avanzarFlores
+      Pos(PosAv+1,PosCa-5)
+  fin
+  robot tipoCuatro
+  comenzar
+    avanzarPapeles
+    Pos(PosAv+1,PosCa-5)
+    avanzarPapeles
+  fin
+variables
+  robotUno : tipoUno
+  robotDos : tipoDos
+  robotTres : tipoTres
+  robotCuatro : tipoCuatro
+comenzar
+  AsignarArea(robotUno,areaUno)
+  AsignarArea(robotDos,areaUno)
+  AsignarArea(robotTres,areaDos)
+  AsignarArea(robotCuatro,areaDos)
+  Iniciar(robotUno,1,75)
+  Iniciar(robotDos,4,75)
+  Iniciar(robotTres,1,10)
+  Iniciar(robotCuatro,7,10)
+fin

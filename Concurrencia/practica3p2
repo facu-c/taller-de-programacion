@@ -1,0 +1,89 @@
+programa pro
+procesos
+  proceso recorrerFlores(ES flores:numero; E escalones:numero)
+  variables
+    av,ca:numero
+  comenzar
+    repetir escalones
+      av:=PosAv+1
+      ca:=PosCa+1
+      BloquearEsquina(av,ca)
+      mover
+      si(HayFlorEnLaEsquina)
+        tomarFlor
+      av:=av
+      ca:=ca
+      LiberarEsquina(av,ca)
+  fin
+  proceso recorrerPapeles(ES papeles:numero; E escalones:numero)
+  variables
+    av,ca:numero
+  comenzar
+    repetir escalones
+      av:=PosAv+1
+      ca:=PosCa+1
+      BloquearEsquina(av,ca)
+      mover
+      si(HayFlorEnLaEsquina)
+        tomarFlor
+    av:=av
+    ca:=ca
+    LiberarEsquina(av,ca)
+  fin
+areas
+  area: AreaC(1,1,100,100)
+robots
+  robot tipoUno
+  variables
+    flores:numero
+    escalones:numero
+  comenzar
+    flores:=0
+    escalones:=5
+    repetir 5
+      recorrerFlores(flores,escalones)
+      derecha
+      recorrerFlores(flores,escalones)
+      repetir 3
+        derecha
+      escalones:=escalones-1
+    escalones:=1    
+    repetir 5
+      recorrerFlores(flores,escalones)
+      derecha
+      recorrerFlores(flores,escalones)
+      repetir 3
+        derecha
+      escalones:=escalones+1
+  fin
+  robot tipoDos
+  variables
+    papeles, escalones:numero
+  comenzar
+    papeles:=0
+    escalones:=5
+    repetir 5
+      recorrerPapeles(papeles,escalones)
+      repetir 3
+        derecha
+      recorrerPapeles(papeles,escalones)
+      derecha
+      escalones:=escalones-1
+    escalones:=1
+    repetir 5
+      recorrerPapeles(papeles,escalones)
+      repetir 3
+        derecha
+      recorrerPapeles(papeles,escalones)
+      derecha
+      escalones:=escalones+1
+  fin
+variables
+  robotUno : tipoUno
+  robotDos : tipoDos
+comenzar
+  AsignarArea(robotUno,area)
+  AsignarArea(robotDos,area)
+  Iniciar(robotDos,31,1)
+  Iniciar(robotUno,1,1)
+fin

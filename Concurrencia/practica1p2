@@ -1,0 +1,57 @@
+programa punto2
+procesos
+  proceso avanzar
+  variables
+    cant : numero
+  comenzar
+    repetir 19
+      mientras(HayPapelEnLaEsquina)
+        tomarPapel
+      mover
+    Informar(cant)
+  fin
+areas
+  caminoUno : AreaP(10,10,10,30)
+  caminoDos : AreaP(11,30,30,30)
+  caminoTres : AreaP(30,10,30,30)
+  caminoCuatro : AreaP(11,10,30,10)
+robots
+  robot tipo1
+  comenzar
+    avanzar
+    mover
+  fin
+  robot tipo2
+  comenzar
+    derecha
+    avanzar
+  fin
+  robot tipo3
+  comenzar
+    derecha
+    derecha
+    avanzar
+    mover
+  fin
+  robot tipo4
+  comenzar
+    derecha
+    derecha
+    derecha
+    avanzar
+  fin
+variables
+  robot1 : tipo1
+  robot2 : tipo2
+  robot3 : tipo3
+  robot4 : tipo4
+comenzar
+  AsignarArea(robot1,caminoUno)
+  AsignarArea(robot2,caminoDos)
+  AsignarArea(robot3,caminoTres)
+  AsignarArea(robot4,caminoCuatro)
+  Iniciar(robot4,30,10)
+  Iniciar(robot3,30,30)
+  Iniciar(robot2,11,30)
+  Iniciar(robot1,10,10)
+fin

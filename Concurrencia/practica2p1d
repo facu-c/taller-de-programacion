@@ -1,0 +1,93 @@
+programa progra
+procesos
+  proceso recorrer(ES flores:numero)
+  comenzar
+    repetir 9      
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        flores:=flores+1
+      mover
+  fin
+areas
+  areaUno: AreaP(1,1,1,10)
+  areaDos: AreaP(2,11,2,20)
+  areaTres: AreaP(3,21,3,30)
+  areaCuatro: AreaP(4,31,4,40)
+  areaCinco: AreaP(5,41,5,50)
+  areaSeis: AreaP(6,51,6,60)
+  areaFis: AreaP(2,1,2,1)
+robots
+  robot fiscalizador
+  variables
+    flores,max : numero
+    id,ganador:numero
+  comenzar
+    id:=0
+    EnviarMensaje(1,robotUno)
+    EnviarMensaje(2,robotDos)
+    EnviarMensaje(3,robotTres)
+    EnviarMensaje(4,robotCuatro)
+    EnviarMensaje(5,robotCinco)
+    EnviarMensaje(6,robotSeis)
+    max:=0
+    ganador:=0
+    repetir 6
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(flores,robotUno)
+      sino
+        si(id=2)
+          RecibirMensaje(flores,robotDos)
+        sino
+          si(id=3)
+            RecibirMensaje(flores,robotTres)
+          sino
+            si(id=4)
+              RecibirMensaje(flores,robotCuatro)
+            sino 
+              si(id=5)
+                RecibirMensaje(flores,robotCinco)
+              sino
+                si(id=6)
+                  RecibirMensaje(flores,robotSeis)
+      si(flores>max)
+        max:=flores
+        ganador:=id     
+    Informar(max)
+    Informar(ganador)
+  fin
+  robot recolector
+  variables
+    flores:numero
+    id:numero
+  comenzar
+    flores:=0
+    RecibirMensaje(id,robotFiscal)
+    recorrer(flores)
+    EnviarMensaje(id,robotFiscal)
+    EnviarMensaje(flores,robotFiscal)
+  fin
+variables
+  robotUno : recolector
+  robotDos : recolector
+  robotTres : recolector
+  robotCuatro : recolector
+  robotCinco : recolector
+  robotSeis : recolector
+  robotFiscal : fiscalizador
+comenzar
+  AsignarArea(robotFiscal,areaFis)
+  AsignarArea(robotUno,areaUno)
+  AsignarArea(robotDos,areaDos)
+  AsignarArea(robotTres,areaTres)
+  AsignarArea(robotCuatro,areaCuatro)
+  AsignarArea(robotCinco,areaCinco)
+  AsignarArea(robotSeis,areaSeis)
+  Iniciar(robotUno,1,1)
+  Iniciar(robotDos,2,11)
+  Iniciar(robotTres,3,21)
+  Iniciar(robotCuatro,4,31)
+  Iniciar(robotCinco,5,41)
+  Iniciar(robotSeis,6,51)
+  Iniciar(robotFiscal,2,1)
+fin

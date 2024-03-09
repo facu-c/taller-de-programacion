@@ -1,0 +1,87 @@
+programa facundo
+procesos
+  proceso juntarEsquina(ES flores:numero)
+  variables
+    posca,posav:numero
+  comenzar
+    posca:=PosCa
+    posav:=PosAv
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores+1
+    Pos(posav,posca)
+    LiberarEsquina(10,10)
+  fin
+  proceso depositarEsquina(ES flores:numero)
+  variables
+    posca,posav:numero
+  comenzar
+    posca:=PosCa
+    posav:=PosAv
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+      flores:=flores-1
+    Pos(posav,posca)
+    LiberarEsquina(10,10)
+  fin
+areas
+  esquinaComun: AreaC(10,10,10,10)
+  areaUno: AreaP(1,3,100,3)
+  areaDos: AreaP(1,4,100,4)
+  areaFiscal: AreaP(1,5,1,5)
+robots
+  robot recolector
+  variables
+    flores, posav:numero
+    ok:boolean
+  comenzar
+    flores:=0
+    posav:=PosAv
+    derecha
+    mientras(posav<100)
+      mover
+      posav:=PosAv
+      si(HayFlorEnLaEsquina)
+        tomarFlor
+        flores:=flores+1
+        si(flores=10)
+          depositarEsquina(flores)
+          EnviarMensaje(V,robotUno)
+          EnviarMensaje(V,robotDos)
+          RecibirMensaje(ok,robotUno)
+          RecibirMensaje(ok,robotDos)
+          EnviarMensaje(V,robotFiscal)
+    EnviarMensaje(F,robotFiscal)
+  fin
+  robot fiscal
+  variables
+    flores:numero
+    ok:boolean
+  comenzar
+    flores:=0
+    ok:=V
+    mientras(ok)
+      RecibirMensaje(ok,robotUno)
+      RecibirMensaje(ok,robotDos)
+      juntarEsquina(flores)
+    Informar(flores)
+  fin
+variables
+  robotUno:recolector
+  robotDos:recolector
+  robotFiscal:fiscal
+comenzar
+  AsignarArea(robotUno,areaUno)
+  AsignarArea(robotUno,esquinaComun)
+  AsignarArea(robotDos,areaDos)
+  AsignarArea(robotDos,esquinaComun)
+  AsignarArea(robotFiscal,areaFiscal)
+  AsignarArea(robotFiscal,esquinaComun)
+  Iniciar(robotUno,1,3)
+  Iniciar(robotDos,1,4)
+  Iniciar(robotFiscal,1,5)
+fin
